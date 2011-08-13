@@ -15,28 +15,43 @@ class CreateUsers < ActiveRecord::Migration
       t.string   :yahoo,            :limit => 32
       t.string   :google,           :limit => 32
       t.string   :skype,            :limit => 32
+
+      if on_bushido?
+        t.bushido_authenticatable
+      else
+        # TODO usual devise fields
+      end
+
       # >>> The following fields are required and maintained by [authlogic] plugin.
-      t.string   :password_hash,    :null => false, :default => ""
-      t.string   :password_salt,    :null => false, :default => ""
-      t.string   :remember_token,   :null => false, :default => ""
-      t.string   :perishable_token, :null => false, :default => ""
-      t.string   :openid_identifier
-      t.datetime :last_request_at
-      t.datetime :last_login_at
-      t.datetime :current_login_at
-      t.string   :last_login_ip
-      t.string   :current_login_ip
-      t.integer  :login_count,      :null => false, :default => 0
+      # t.string   :password_hash,    :null => false, :default => ""
+      # t.string   :password_salt,    :null => false, :default => ""
+      # t.string   :remember_token,   :null => false, :default => ""
+      # t.string   :perishable_token, :null => false, :default => ""
+      # t.string   :openid_identifier
+      # t.datetime :last_request_at
+      # t.datetime :last_login_at
+      # t.datetime :current_login_at
+      # t.string   :last_login_ip
+      # t.string   :current_login_ip
+      # t.integer  :login_count,      :null => false, :default => 0
       # >>> End of [authlogic] maintained fields.
+
       t.datetime :deleted_at
       t.timestamps
-    end     
+    end
 
-    add_index :users, [ :username, :deleted_at ], :unique => true
+    if on_bushido?
+      add_index :users, [ :username, :ido_id, :deleted_at ], :unique => true
+    else
+      add_index :users, [ :username, :deleted_at ], :unique => true
+    end
+
     add_index :users, :email
-    add_index :users, :last_request_at
-    add_index :users, :remember_token
-    add_index :users, :perishable_token
+    
+    # authlogic stuff
+    # add_index :users, :last_request_at
+    # add_index :users, :remember_token
+    # add_index :users, :perishable_token
   end
 
   def self.down

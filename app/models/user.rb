@@ -80,6 +80,29 @@ class User < ActiveRecord::Base
     where('upper(username) LIKE upper(:s) OR upper(first_name) LIKE upper(:s) OR upper(last_name) LIKE upper(:s)', :s => "#{query}%")
   }
 
+  devise :bushido_authenticatable,
+         :rememberable, :trackable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :username, :email, :ido_id, :password, :password_confirmation, :remember_me
+
+  def bushido_extra_attributes(extra_attributes)
+    extra_attributes.each do |name, value|
+      case name.to_sym
+      when :email
+        self.email = value
+        if self.username.nil?
+          self.username = value
+        end
+      when :first_name
+        self.first_name = value
+      when :last_name
+        self.last_name = value
+      end
+    end
+  end
+
+
   acts_as_authentic do |c|
     c.session_class = Authentication
     c.validates_uniqueness_of_login_field_options = { :message => :username_taken }
