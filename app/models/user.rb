@@ -76,8 +76,8 @@ class User < ActiveRecord::Base
   scope :by_name, order('first_name, last_name, email')
 
   scope :search, lambda { |query|
-    query = query.gsub(/[^\w\s\-\.']/, '').strip
-    where('upper(username) LIKE upper(:s) OR upper(first_name) LIKE upper(:s) OR upper(last_name) LIKE upper(:s)', :s => "#{query}%")
+    # query = query.gsub(/[^\w\s\-\.']/, '').strip
+    # where('upper(username) LIKE upper(:s) OR upper(first_name) LIKE upper(:s) OR upper(last_name) LIKE upper(:s)', :s => "#{query}%")
   }
 
   if on_bushido?
@@ -103,13 +103,13 @@ class User < ActiveRecord::Base
   end
 
 
-  acts_as_authentic do |c|
-    c.session_class = Authentication
+  # acts_as_authentic do |c|
+    # c.session_class = Authentication
     # TODO-AUTHLOGIC c.validates_uniqueness_of_login_field_options = { :message => :username_taken }
-    c.validates_uniqueness_of_email_field_options = { :message => :email_in_use }
-    c.validates_length_of_password_field_options  = { :minimum => 0, :allow_blank => true, :if => :require_password? }
-    c.ignore_blank_passwords = true
-  end
+    # c.validates_uniqueness_of_email_field_options = { :message => :email_in_use }
+    # c.validates_length_of_password_field_options  = { :minimum => 0, :allow_blank => true, :if => :require_password? }
+    # c.ignore_blank_passwords = true
+  # end
 
   # Store current user in the class so we could access it from the activity
   # observer without extra authentication query.

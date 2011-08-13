@@ -91,8 +91,8 @@ class Task < ActiveRecord::Base
   scope :completed_last_month, where('completed_at >= ? AND completed_at < ?', (Time.zone.now.beginning_of_month.utc - 1.day).beginning_of_month.utc, Time.zone.now.beginning_of_month.utc)
 
   scope :search, lambda { |query|
-    query = query.gsub(/[^\w\s\-\.']/, '').strip
-    where('upper(name) LIKE upper(?)', "%#{query}%")
+    # query = query.gsub(/[^\w\s\-\.']/, '').strip
+    # where('upper(name) LIKE upper(?)', "%#{query}%")
   }
 
   acts_as_commentable

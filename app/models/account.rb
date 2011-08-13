@@ -58,8 +58,8 @@ class Account < ActiveRecord::Base
   scope :assigned_to, lambda { |user| where(:assigned_to => user.id) }
 
   scope :search, lambda { |query|
-    query = query.gsub(/[^\w\s\-\.']/, '').strip
-    where('upper(name) LIKE upper(:m) OR upper(email) LIKE upper(:m)', :m => "%#{query}%")
+    # query = query.gsub(/[^\w\s\-\.']/, '').strip
+    # where('upper(name) LIKE upper(:m) OR upper(email) LIKE upper(:m)', :m => "%#{query}%")
   }
 
   uses_user_permissions
@@ -82,8 +82,8 @@ class Account < ActiveRecord::Base
   #----------------------------------------------------------------------------
   def location
     return "" unless self[:billing_address]
-    location = self[:billing_address].strip.split("\n").last
-    location.gsub(/(^|\s+)\d+(:?\s+|$)/, " ").strip if location
+    # location = self[:billing_address].strip.split("\n").last
+    # location.gsub(/(^|\s+)\d+(:?\s+|$)/, " ").strip if location
   end
 
   # Attach given attachment to the account if it hasn't been attached already.

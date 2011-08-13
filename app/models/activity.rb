@@ -36,14 +36,14 @@ class Activity < ActiveRecord::Base
   scope :recent, where(:action => 'viewed').order('activities.updated_at DESC').limit(10)
   scope :for,    lambda { |user| where(:user_id => user.id) }
   scope :with_actions,    lambda { |*actions| where('action IN (?)', actions) }
-  scope :without_actions, lambda { |*actions| where('action NOT IN (?)', actions) }
+  # scope :without_actions, lambda { |*actions| #where('action NOT IN (?)', actions) }
   scope :latest, lambda { |options|
-    includes(:user).
-    where(options[:asset] ?  {:subject_type => options[:asset]} : nil).
-    where(options[:action] ? {:action => options[:action]} : nil).
-    where(options[:user] ?   {:user_id => options[:user]} : nil).
-    where('activities.created_at >= ?', Time.zone.now - (options[:duration] || 2.days)).
-    order('activities.created_at DESC')
+    #includes(:user).
+    #where(options[:asset] ?  {:subject_type => options[:asset]} : nil).
+    #where(options[:action] ? {:action => options[:action]} : nil).
+    #where(options[:user] ?   {:user_id => options[:user]} : nil).
+    #where('activities.created_at >= ?', Time.zone.now - (options[:duration] || 2.days)).
+    #order('activities.created_at DESC')
   }
 
   validates_presence_of :user, :subject

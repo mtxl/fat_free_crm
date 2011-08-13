@@ -66,21 +66,22 @@ class Contact < ActiveRecord::Base
   scope :created_by, lambda { |user| { :conditions => [ "user_id = ?", user.id ] } }
   scope :assigned_to, lambda { |user| { :conditions => ["assigned_to = ?", user.id ] } }
 
+
   scope :search, lambda { |query|
-    query = query.gsub(/[^@\w\s\-\.']/, '').strip
+  #  query = query.gsub(/[^@\w\s\-\.']/, '').strip
     # We can't be sure that names are always entered in the right order, so we take the query and
     # split it into all possible first/last name combinations.
     # => "Zhong Fai Gao" matches last name "Zhong Fai" and "Fai Gao"
-    a = query.split(" ")
-    parts = [[a[0], a[1..-1].join(" ")],[a.reverse[0], a.reverse[1..-1].reverse.join(" ")]]
-    name_query = if a.size > 1
-      parts.map{ |first, last|
-        "(upper(first_name) LIKE upper('%#{first}%') AND upper(last_name) LIKE upper('%#{last}%'))"
-      }.join(" OR ")
-    else
-      "upper(first_name) LIKE upper('%#{query}%') OR upper(last_name) LIKE upper('%#{query}%')"
-    end
-    where("#{name_query} OR upper(email) LIKE upper(:m) OR upper(alt_email) LIKE upper(:m) OR phone LIKE :m OR mobile LIKE :m", :m => "%#{query}%")
+  #  a = query.split(" ")
+  #  parts = [[a[0], a[1..-1].join(" ")],[a.reverse[0], a.reverse[1..-1].reverse.join(" ")]]
+  #  name_query = if a.size > 1
+  #    parts.map{ |first, last|
+  #      "(upper(first_name) LIKE upper('%#{first}%') AND upper(last_name) LIKE upper('%#{last}%'))"
+  #    }.join(" OR ")
+  #  else
+  #    "upper(first_name) LIKE upper('%#{query}%') OR upper(last_name) LIKE upper('%#{query}%')"
+  #  end
+  #  where("#{name_query} OR upper(email) LIKE upper(:m) OR upper(alt_email) LIKE upper(:m) OR phone LIKE :m OR mobile LIKE :m", :m => "%#{query}%")
   }
 
   uses_user_permissions

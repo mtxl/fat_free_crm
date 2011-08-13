@@ -60,13 +60,13 @@ class Opportunity < ActiveRecord::Base
 
   # Search by name OR id
   scope :search, lambda { |query|
-    query = query.gsub(/[^\w\s\-\.']/, '').strip
+    # query = query.gsub(/[^\w\s\-\.']/, '').strip
     # postgresql does not like to compare string to integer field
-    if query =~ /^\d+$/
-      where('upper(name) LIKE upper(:name) OR opportunities.id = :id', :name => "%#{query}%", :id => query)
-    else
-      where('upper(name) LIKE upper(:name)', :name => "%#{query}%")
-    end
+    # if query =~ /^\d+$/
+    #   where('upper(name) LIKE upper(:name) OR opportunities.id = :id', :name => "%#{query}%", :id => query)
+    # else
+    #   where('upper(name) LIKE upper(:name)', :name => "%#{query}%")
+    # end
   }
 
   uses_user_permissions
