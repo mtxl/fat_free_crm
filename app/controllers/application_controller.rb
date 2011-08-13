@@ -137,11 +137,12 @@ private
 
   #----------------------------------------------------------------------------
   def require_no_user
-    if current_user
-      store_location
-      flash[:notice] = t(:msg_logout_needed)
-      redirect_to profile_url
-    end
+    require_no_authentication
+    # if current_user
+      # store_location
+      # flash[:notice] = t(:msg_logout_needed)
+      # redirect_to profile_url
+    # end
   end
 
   #----------------------------------------------------------------------------
