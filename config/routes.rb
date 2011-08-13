@@ -2,6 +2,8 @@ FatFreeCRM::Application.routes.draw do
 
   root :to => 'home#index'
 
+  devise_for :users
+
   match 'activities' => 'home#index'
   match 'admin'      => 'admin/users#index',       :as => :admin
   match 'login'      => 'authentications#new',     :as => :login

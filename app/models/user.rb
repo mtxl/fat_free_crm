@@ -80,20 +80,20 @@ class User < ActiveRecord::Base
     where('upper(username) LIKE upper(:s) OR upper(first_name) LIKE upper(:s) OR upper(last_name) LIKE upper(:s)', :s => "#{query}%")
   }
 
-  devise :bushido_authenticatable,
-         :rememberable, :trackable
+  if on_bushido?
+    devise :bushido_authenticatable, :rememberable, :trackable
+  else
+    devise :database_authenticatable
+  end
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :ido_id, :password, :password_confirmation, :remember_me
+  attr_accessible :email, :ido_id, :password, :password_confirmation, :remember_me
 
   def bushido_extra_attributes(extra_attributes)
     extra_attributes.each do |name, value|
       case name.to_sym
       when :email
         self.email = value
-        if self.username.nil?
-          self.username = value
-        end
       when :first_name
         self.first_name = value
       when :last_name
@@ -105,7 +105,7 @@ class User < ActiveRecord::Base
 
   acts_as_authentic do |c|
     c.session_class = Authentication
-    c.validates_uniqueness_of_login_field_options = { :message => :username_taken }
+    # TODO-AUTHLOGIC c.validates_uniqueness_of_login_field_options = { :message => :username_taken }
     c.validates_uniqueness_of_email_field_options = { :message => :email_in_use }
     c.validates_length_of_password_field_options  = { :minimum => 0, :allow_blank => true, :if => :require_password? }
     c.ignore_blank_passwords = true
@@ -115,12 +115,13 @@ class User < ActiveRecord::Base
   # observer without extra authentication query.
   cattr_accessor :current_user
 
-  validates_presence_of :username, :message => :missing_username
+  # validates_presence_of :username, :message => :missing_username
   validates_presence_of :email,    :message => :missing_email
 
   #----------------------------------------------------------------------------
   def name
-    self.first_name.blank? ? self.username : self.first_name
+    # TODO-AUGHLOGIC self.first_name.blank? ? self.username : self.first_name
+    self.first_name.blank? ? self.email.strip("@").first : self.first_name
   end
 
   #----------------------------------------------------------------------------

@@ -19,7 +19,7 @@ class CreateUsers < ActiveRecord::Migration
       if on_bushido?
         t.bushido_authenticatable
       else
-        # TODO usual devise fields
+        t.database_authenticatable
       end
 
       # >>> The following fields are required and maintained by [authlogic] plugin.

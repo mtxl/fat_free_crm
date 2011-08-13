@@ -113,25 +113,26 @@ private
   end
 
   #----------------------------------------------------------------------------
-  def current_user
-    @current_user ||= (current_user_session && current_user_session.record)
-    if @current_user
-      @current_user.set_individual_locale
-      @current_user.set_single_access_token
-    end
-    User.current_user = @current_user
-  end
+  # def current_user
+    # @current_user ||= (current_user_session && current_user_session.record)
+    # if @current_user
+      # @current_user.set_individual_locale
+      # @current_user.set_single_access_token
+    # end
+    # User.current_user = @current_user
+  # end
 
   #----------------------------------------------------------------------------
   def require_user
-    unless current_user
-      store_location
-      flash[:notice] = t(:msg_login_needed) if request.fullpath != "/"
-      respond_to do |format|
-        format.html { redirect_to login_url }
-        format.js   { render(:index) { |page| page.redirect_to login_url } }
-      end
-    end
+    authenticate_user!
+    # unless current_user
+      # store_location
+      # flash[:notice] = t(:msg_login_needed) if request.fullpath != "/"
+      # respond_to do |format|
+        # format.html { redirect_to login_url }
+        # format.js   { render(:index) { |page| page.redirect_to login_url } }
+      # end
+    # end
   end
 
   #----------------------------------------------------------------------------

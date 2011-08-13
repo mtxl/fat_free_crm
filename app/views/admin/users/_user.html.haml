@@ -27,7 +27,7 @@
       - else
         %span.grayed #{t :delete}?
 
-    %span.black #{link_to(h(user.full_name), user)} (#{user.username})
+    %span.black #{link_to(h(user.full_name), user)}
     %tt
       = "- #{h(user.title)}" unless user.title.blank?
       = " " + t(:at) + " " + h(user.company) unless user.company.blank?
