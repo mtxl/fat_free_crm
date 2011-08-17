@@ -3,7 +3,6 @@ class CreateUsers < ActiveRecord::Migration
     create_table :users, :force => true do |t|
       t.string   :uuid,             :limit => 36
       t.string   :username,         :null => false, :default => "", :limit => 32
-      t.string   :email,            :null => false, :default => "", :limit => 64
       t.string   :first_name,       :limit => 32
       t.string   :last_name,        :limit => 32
       t.string   :title,            :limit => 64
@@ -16,15 +15,15 @@ class CreateUsers < ActiveRecord::Migration
       t.string   :google,           :limit => 32
       t.string   :skype,            :limit => 32
 
-      if on_bushido?
-        t.bushido_authenticatable
-      else
-        t.database_authenticatable
-      end
-      
-      t.trackable
+      # DEVISE FIELDS
+      t.bushido_authenticatable
+      t.database_authenticatable, :null => false
       t.recoverable
       t.rememberable
+      t.trackable
+      # t.encryptable
+      # t.confirmable
+
 
       # >>> The following fields are required and maintained by [authlogic] plugin.
       # t.string   :password_hash,    :null => false, :default => ""
