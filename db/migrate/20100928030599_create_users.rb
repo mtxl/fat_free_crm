@@ -21,6 +21,10 @@ class CreateUsers < ActiveRecord::Migration
       else
         t.database_authenticatable
       end
+      
+      t.trackable
+      t.recoverable
+      t.rememberable
 
       # >>> The following fields are required and maintained by [authlogic] plugin.
       # t.string   :password_hash,    :null => false, :default => ""
