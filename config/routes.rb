@@ -6,16 +6,16 @@ FatFreeCRM::Application.routes.draw do
 
   match 'activities' => 'home#index'
   match 'admin'      => 'admin/users#index',       :as => :admin
-  match 'login'      => 'authentications#new',     :as => :login
-  match 'logout'     => 'authentications#destroy', :as => :logout
+#  match 'login'      => 'authentications#new',     :as => :login
+#  match 'logout'     => 'authentications#destroy', :as => :logout
   match 'options'    => 'home#options'
-  match 'profile'    => 'users#show',              :as => :profile
-  match 'signup'     => 'users#new',               :as => :signup
+#  match 'profile'    => 'users#show',              :as => :profile
+#  match 'signup'     => 'users#new',               :as => :signup
   match 'timeline'   => 'home#timeline',           :as => :timeline
   match 'timezone'   => 'home#timezone',           :as => :timezone
   match 'toggle'     => 'home#toggle'
 
-  resource  :authentication
+#  resource  :authentication
   resources :comments
   resources :emails
   resources :passwords
@@ -101,6 +101,7 @@ FatFreeCRM::Application.routes.draw do
     end
   end
 
+=begin
   resources :users do
     member do
       get :avatar
@@ -109,6 +110,7 @@ FatFreeCRM::Application.routes.draw do
       put :change_password
     end
   end
+=end
 
   namespace :admin do
     resources :users do
@@ -127,6 +129,6 @@ FatFreeCRM::Application.routes.draw do
     resources :plugins
   end
 
-  match '/:controller(/:action(/:id))'
+#  match '/:controller(/:action(/:id))'
 end
 
