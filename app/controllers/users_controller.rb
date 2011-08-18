@@ -41,6 +41,7 @@ class UsersController < Devise::SessionsController
     end
   end
 
+=begin
   # GET /users/new
   # GET /users/new.xml                                                     HTML
   #----------------------------------------------------------------------------
@@ -56,6 +57,7 @@ class UsersController < Devise::SessionsController
       redirect_to login_path
     end
   end
+=end
 
   # GET /users/1/edit                                                      AJAX
   #----------------------------------------------------------------------------
@@ -63,6 +65,7 @@ class UsersController < Devise::SessionsController
     # <-- render edit.js.rjs
   end
 
+=begin
   # POST /users
   # POST /users.xml                                                        HTML
   #----------------------------------------------------------------------------
@@ -80,6 +83,7 @@ class UsersController < Devise::SessionsController
       render :new
     end
   end
+=end
 
   # PUT /users/1
   # PUT /users/1.xml                                                       AJAX

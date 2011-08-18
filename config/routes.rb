@@ -2,16 +2,32 @@ FatFreeCRM::Application.routes.draw do
 
   root :to => 'home#index'
 
-  devise_for :users, :controllers => { :sessions => 'users/sessions' } 
+  devise_for :users, :controllers => { :sessions => 'users/sessions' } do
+    match 'profile', :to => "users#show", :as => :profile
+     resources :users do
+      member do
+        get :avatar
+        get :password
+        put :upload_avatar
+        put :change_password
+      end
+    end
+
+    # get :avatar, :to => "users/avatar"
+    # get :password, :to => "users/password"
+    # put :upload_avatar, :to => "users/upload_avatar"
+    # put :change_password, :to => "users/change_password"
+  end
 
   match 'activities' => 'home#index'
   match 'admin'      => 'admin/users#index',       :as => :admin
   match 'options'    => 'home#options'
   match 'profile'    => 'users#show',              :as => :profile
-#  match 'signup'     => 'users#new',               :as => :signup
   match 'timeline'   => 'home#timeline',           :as => :timeline
   match 'timezone'   => 'home#timezone',           :as => :timezone
   match 'toggle'     => 'home#toggle'
+
+
 
 #  resource  :authentication
   resources :comments
