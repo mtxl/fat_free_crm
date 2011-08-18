@@ -75,8 +75,7 @@ class ActivityObserver < ActiveRecord::Observer
 
   private
   def log_activity(subject, action)
-    current_user = User.current_user
-    Activity.log(current_user, subject, action) if current_user
+    Activity.log(current_user, subject, action) if user_signed_in?
   end
 
   def update_campaign_revenue(campaign, revenue)

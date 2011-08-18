@@ -52,6 +52,7 @@ class HomeController < ApplicationController
   # POST /home/redraw                                                      AJAX
   #----------------------------------------------------------------------------
   def redraw
+    logger.debug "FATAL BOB: #{pref.inspect}"
     @current_user.pref[:activity_asset] = params[:asset] if params[:asset]
     @current_user.pref[:activity_action_type] = params[:action_type] if params[:action_type]
     @current_user.pref[:activity_user] = params[:user] if params[:user]
@@ -115,6 +116,8 @@ class HomeController < ApplicationController
 
   #----------------------------------------------------------------------------
   def activity_asset
+    set_current_user
+
     asset = @current_user.pref[:activity_asset]
     if asset.nil? || asset == "all"
       nil

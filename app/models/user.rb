@@ -121,7 +121,7 @@ class User < ActiveRecord::Base
   #----------------------------------------------------------------------------
   def name
     # TODO-AUGHLOGIC self.first_name.blank? ? self.username : self.first_name
-    self.first_name.blank? ? self.email.strip("@").first : self.first_name
+    self.first_name.blank? ? self.email.split("@").first : self.first_name
   end
 
   #----------------------------------------------------------------------------

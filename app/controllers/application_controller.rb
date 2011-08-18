@@ -17,8 +17,10 @@
 
 class ApplicationController < ActionController::Base
 
+  layout :layout_by_resource
+
   # helper :all gets called authomagically in Rails3.
-  helper_method :current_user_session, :current_user, :can_signup?
+  helper_method :current_user_session, :set_current_user, :can_signup?
   helper_method :called_from_index_page?, :called_from_landing_page?
 
   before_filter :set_context
@@ -113,36 +115,36 @@ private
   end
 
   #----------------------------------------------------------------------------
-  # def current_user
-    # @current_user ||= (current_user_session && current_user_session.record)
-    # if @current_user
-      # @current_user.set_individual_locale
-      # @current_user.set_single_access_token
-    # end
-    # User.current_user = @current_user
-  # end
+  def set_current_user
+    if user_signed_in?
+      @current_user = current_user
+      @current_user.set_individual_locale
+      @current_user.set_single_access_token
+    end
+    User.current_user = @current_user
+  end
 
   #----------------------------------------------------------------------------
   def require_user
-    authenticate_user!
-    # unless current_user
-      # store_location
-      # flash[:notice] = t(:msg_login_needed) if request.fullpath != "/"
-      # respond_to do |format|
-        # format.html { redirect_to login_url }
-        # format.js   { render(:index) { |page| page.redirect_to login_url } }
-      # end
-    # end
+    #authenticate_user!
+    unless user_signed_in?
+      store_location
+      flash[:notice] = t(:msg_login_needed) if request.fullpath != "/"
+      respond_to do |format|
+        format.html { redirect_to new_user_session_path }
+        format.js   { render(:index) { |page| page.redirect_to new_user_session_path } }
+      end
+    end
   end
 
   #----------------------------------------------------------------------------
   def require_no_user
-    require_no_authentication
-    # if current_user
-      # store_location
-      # flash[:notice] = t(:msg_logout_needed)
-      # redirect_to profile_url
-    # end
+    #require_no_authentication
+    if user_signed_in?
+      store_location
+      flash[:notice] = t(:msg_logout_needed)
+      redirect_to profile_url
+    end
   end
 
   #----------------------------------------------------------------------------
@@ -276,6 +278,14 @@ private
   #----------------------------------------------------------------------------
   def current_query
     @current_query = params[:query] || session["#{controller_name}_current_query".to_sym] || ""
+  end
+
+  def layout_by_resource
+    if devise_controller?
+      nil
+    else
+      "application"
+    end
   end
 
 end
