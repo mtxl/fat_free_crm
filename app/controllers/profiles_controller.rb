@@ -15,14 +15,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------------------------
 
-class ProfilesController < Devise::SessionsController
+class ProfilesController < ApplicationController
 
-  before_filter :require_no_user, :only => [ :new, :create ]
   before_filter :require_user, :only => [ :show, :redraw, :password, :change_password ]
   before_filter :set_current_tab, :only => [ :show ] # Don't hightlight any tabs.
-  before_filter :require_and_assign_user, :except => [ :new, :create, :show ]
-  
-  
+  before_filter :require_and_assign_user, :except => [ :show ]
+
   # GET /users
   # GET /users.xml                              HTML (not directly exposed yet)
   #----------------------------------------------------------------------------
@@ -43,62 +41,10 @@ class ProfilesController < Devise::SessionsController
   end
 
 
-  # GET /users/new
-  # GET /users/new.xml                                                     HTML
-  #----------------------------------------------------------------------------
-  def new
-    if can_signup?
-      @user = User.new
-
-      respond_to do |format|
-        format.html # new.html.haml <-- signup form
-        format.xml  { render :xml => @user }
-      end
-    else
-      redirect_to login_path
-    end
-  end
-
-
   # GET /users/1/edit                                                      AJAX
   #----------------------------------------------------------------------------
   def edit
     # <-- render edit.js.rjs
-  end
-
-
-  # POST /users
-  # POST /users.xml                                                        HTML
-  #----------------------------------------------------------------------------
-  def create
-    @user = User.new(params[:user])
-    if @user.save
-      if Setting.user_signup == :needs_approval
-        flash[:notice] = t(:msg_account_created)
-        redirect_to login_url
-      else
-        flash[:notice] = t(:msg_successful_signup)
-        redirect_back_or_default profile_url
-      end
-    else
-      render :new
-    end
-  end
-
-
-  # PUT /users/1
-  # PUT /users/1.xml                                                       AJAX
-  #----------------------------------------------------------------------------
-  def update
-    respond_to do |format|
-      if @user.update_attributes(params[:user])
-        format.js
-        format.xml { head :ok }
-      else
-        format.js
-        format.xml { render :xml => @user.errors, :status => :unprocessable_entity }
-      end
-    end
   end
 
   # DELETE /users/1

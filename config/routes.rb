@@ -3,13 +3,12 @@ FatFreeCRM::Application.routes.draw do
   root :to => 'home#index'
 
   devise_for :users
-  match 'profile', :to => "profiles#show", :as => :profile
 
+  match 'profile'    => "profiles#show",           :as => :user_profile
 
   match 'activities' => 'home#index'
   match 'admin'      => 'admin/users#index',       :as => :admin
   match 'options'    => 'home#options'
-  match 'profile'    => 'users#show',              :as => :profile
   match 'timeline'   => 'home#timeline',           :as => :timeline
   match 'timezone'   => 'home#timezone',           :as => :timezone
   match 'toggle'     => 'home#toggle'
@@ -110,7 +109,6 @@ FatFreeCRM::Application.routes.draw do
       put :change_password
     end
   end
-
 
   namespace :admin do
     resources :users do

@@ -50,7 +50,7 @@ class PasswordsController < ApplicationController
       render :edit
     elsif @user.update_attributes(params[:user])
       flash[:notice] = t(:msg_password_updated)
-      redirect_to profile_url
+      redirect_to user_profile_url
     else
       render :edit
     end

@@ -143,7 +143,7 @@ private
     if user_signed_in?
       store_location
       flash[:notice] = t(:msg_logout_needed)
-      redirect_to profile_url
+      redirect_to user_profile_url
     end
   end
 
