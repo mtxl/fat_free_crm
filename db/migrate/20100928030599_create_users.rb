@@ -43,7 +43,7 @@ class CreateUsers < ActiveRecord::Migration
       t.timestamps
     end
 
-    if on_bushido?
+    if Devise::on_bushido?
       add_index :users, [ :username, :ido_id, :deleted_at ], :unique => true
     else
       add_index :users, [ :username, :deleted_at ], :unique => true

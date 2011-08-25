@@ -80,7 +80,7 @@ class User < ActiveRecord::Base
     # where('upper(username) LIKE upper(:s) OR upper(first_name) LIKE upper(:s) OR upper(last_name) LIKE upper(:s)', :s => "#{query}%")
   }
 
-  if on_bushido?
+  if Devise::on_bushido?
     devise :bushido_authenticatable, :rememberable, :trackable
   else
     devise :database_authenticatable
